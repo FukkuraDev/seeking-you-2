@@ -1,9 +1,37 @@
+import Link from "next/link";
+
 export default function ProtectedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      <nav className="mb-8">
+        <div className="flex space-x-4 border-b border-gray-200 pb-4">
+          <Link
+            href="/protected"
+            className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md"
+          >
+            Protected Home
+          </Link>
+          <Link
+            href="/protected/dashboard"
+            className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md"
+          >
+            Dashboard
+          </Link>
+          <Link
+            href="/protected/roles"
+            className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md"
+          >
+            Team Roles
+          </Link>
+        </div>
+      </nav>
+      {children}
+    </div>
+  );
 
   // return (
   //   <main className="min-h-screen flex flex-col items-center">
