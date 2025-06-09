@@ -43,8 +43,8 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
               <Heart className="h-8 w-8 text-rose-600" />
-              <span className="ml-2 text-xl font-bold text-gray-800">
-                Seeking You <span className="text-rose-600">2</span>
+              <span className="ml-2 text-xl font-bold text-gray-800 flex items-center gap-x-1.5">
+                Seeking You <span className="text-rose-600 text-3xl">2</span>
               </span>
             </Link>
           </div>
