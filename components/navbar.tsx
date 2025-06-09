@@ -44,7 +44,7 @@ const Navbar = () => {
             <Link href="/" className="flex items-center">
               <Heart className="h-8 w-8 text-rose-600" />
               <span className="ml-2 text-xl font-bold text-gray-800">
-                Seeking You
+                Seeking You <span className="text-rose-600">2</span>
               </span>
             </Link>
           </div>
