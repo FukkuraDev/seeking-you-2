@@ -54,6 +54,7 @@ web_modules/
 # Optional eslint cache
 .eslintcache
 
+
 # Optional stylelint cache
 .stylelintcache
 
@@ -137,3 +138,8 @@ dist
 
 # mac
 .DS_Store
+
+
+# packages 
+
+package-lock.json
