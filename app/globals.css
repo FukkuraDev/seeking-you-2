@@ -58,6 +58,10 @@
   }
 }
 
+.seeking-pink {
+  background-color: #f16584;
+}
+
 @layer base {
   * {
     @apply border-border;

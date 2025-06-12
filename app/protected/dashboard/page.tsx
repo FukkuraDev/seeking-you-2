@@ -10,5 +10,9 @@ export default async function DashboardPage() {
     redirect("/auth/login");
   }
 
-  return <DashboardClient user={data.user} />;
+  return (
+    <main className="flex-1 p-6 max-w-7xl mx-auto">
+      <DashboardClient user={data.user} />
+    </main>
+  );
 }

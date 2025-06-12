@@ -1,35 +1,37 @@
-import Link from "next/link";
+import Sidebar from "@/components/sidebar";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
-export default function ProtectedLayout({
+export default async function ProtectedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data?.user) {
+    redirect("/auth/login");
+  }
+
+  const { data: profileData, error: profileError } = await supabase
+    .from("profiles")
+    .select("username, avatar_url")
+    .eq("id", data.user.id)
+    .single();
+
+  if (profileError || !profileData) {
+    redirect("/auth/login");
+  }
+
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <nav className="mb-8">
-        <div className="flex space-x-4 border-b border-gray-200 pb-4">
-          <Link
-            href="/protected"
-            className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md"
-          >
-            Protected Home
-          </Link>
-          <Link
-            href="/protected/dashboard"
-            className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md"
-          >
-            Dashboard
-          </Link>
-          <Link
-            href="/protected/roles"
-            className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md"
-          >
-            Team Roles
-          </Link>
-        </div>
-      </nav>
-      {children}
+
+    <div className="flex min-h-screen bg-gray-50">
+      <Sidebar avatarURL={profileData.avatar_url} userName={profileData.username} />
+      <main className="flex-1 relative overflow-hidden">
+        {children}
+      </main>
     </div>
   );
 

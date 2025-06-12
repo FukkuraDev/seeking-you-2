@@ -1,10 +1,11 @@
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
-import { InfoIcon } from "lucide-react";
-import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 
-export default async function ProtectedPage() {
+import CreatePost from "@/components/create-post";
+import Post from "@/components/post";
+
+export default async function Feed() {
   const supabase = await createClient();
 
   const { data, error } = await supabase.auth.getUser();
@@ -12,25 +13,40 @@ export default async function ProtectedPage() {
     redirect("/auth/login");
   }
 
+  const { data: profileData, error: profileError } = await supabase
+    .from("profiles")
+    .select("username, avatar_url")
+    .eq("id", data.user.id)
+    .single();
+
+  if (profileError || !profileData) {
+    redirect("/auth/login");
+  }
+
   return (
-    <div className="flex-1 w-full flex flex-col gap-12">
-      <div className="w-full">
-        <div className="bg-accent text-sm p-3 px-5 rounded-md text-foreground flex gap-3 items-center">
-          <InfoIcon size="16" strokeWidth={2} />
-          This is a protected page that you can only see as an authenticated
-          user
+    <div className=" flex-1 p-1 max-w-9xl mx-auto">
+      <main className="flex-1 relative overflow-hidden">
+        <div className="sticky top-0 z-10 p-6 ">
+          <CreatePost />
         </div>
-      </div>
-      <div className="flex flex-col gap-2 items-start">
-        <h2 className="font-bold text-2xl mb-4">Your user details</h2>
-        <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
-          {JSON.stringify(data.user, null, 2)}
-        </pre>
-      </div>
-      <div>
-        <h2 className="font-bold text-2xl mb-4">Next steps</h2>
-        <FetchDataSteps />
-      </div>
+        <div className="p-6 space-y-6 max-h-screen overflow-y-auto">
+          <Post
+            user="Maturelisaa"
+            time="2 hour ago"
+            text="Any hot newcastle fans on here?"
+            image="https://placehold.jp/150x150.png"
+          />
+          <div className="pl-12">
+            <Post
+              user="PaulGallant3675"
+              time="1 hour ago"
+              text="You are beautiful I live in Rushcliffe Nottingham"
+              image="https://placehold.jp/150x150.png"
+              isComment
+            />
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
